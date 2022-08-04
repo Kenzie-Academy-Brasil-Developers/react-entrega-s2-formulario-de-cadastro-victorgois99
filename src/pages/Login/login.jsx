@@ -6,6 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Api from "../../services/api";
 import { useState } from "react";
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
     const history = useHistory();
@@ -33,8 +35,11 @@ const Login = () => {
         email: data.email,
         password: data.senha
     }) 
-    .then((response) => (history.push("/dashboard")))
-    .catch((err) => console.log(err));
+    .then((response) => {(history.push("/dashboard"));
+      window.localStorage.setItem("@token", response.data.token)
+      window.localStorage.setItem("@userId", response.data.user.id)
+  })
+    .catch((err) => toast.error(err.response.data.message));
 };
 
 
