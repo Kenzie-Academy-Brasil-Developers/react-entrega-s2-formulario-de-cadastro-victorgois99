@@ -14,7 +14,12 @@ const Login = () => {
 
     const formSchema = yup.object().shape({
     email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-    senha: yup.string().required("Senha obrigatória")
+    senha: yup.string()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\.*])(?=.{8,})/,
+      "A senha deve conter no mínimo 8 caraceteres, uma maiúscula, uma minúscula, um número e um caracter especial"
+    )
+    .required("Senha obrigatória")
   });
 
   const { register, handleSubmit, formState:{errors} } = useForm({
@@ -28,7 +33,7 @@ const Login = () => {
         email: data.email,
         password: data.senha
     }) 
-    .then((response) => console.log(response.data))
+    .then((response) => (history.push("/dashboard")))
     .catch((err) => console.log(err));
 };
 

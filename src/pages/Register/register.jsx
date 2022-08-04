@@ -1,28 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Api from "../../services/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const history = useHistory();
 
   const formSchema = yup.object().shape({
     nome: yup.string().required("Nome obrigatório"),
-    email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-    senha: yup.string().required("Senha obrigatória"),
-    confirmarSenha: yup.string().required("Senha obrigatória"),
+    email: yup.string().required("E-mail obrigatório")
+    .email("E-mail inválido"),
+    senha: yup.string()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\.*])(?=.{8,})/,
+      "A senha deve conter 8 caraceteres, uma maiúscula, uma minúscula, um número e um caracter especial"
+    )
+    .required("Senha obrigatória"),
+    confirmarSenha: yup.string()
+    .required("Senha obrigatória")
+    .oneOf([yup.ref('senha')], 'As senhas precisam ser iguais.'),
+    
     bio: yup.string().required("Bio obrigatória"),
     contato: yup.string().required("Contato obrigatório"),
-    modulo: yup.string().required("Módulo obrigatório"),
   });
 
   const { register, handleSubmit, formState:{errors} } = useForm({
     resolver: yupResolver(formSchema),
   });
 
+  const [type, setType] = useState("Primeiro módulo (Introdução ao Frontend)")
+
   const onSubmitFunction = (data) => {console.log(data)
+
   
   Api
   .post("users", {
@@ -31,11 +44,13 @@ const Register = () => {
       name: data.nome,
       bio: data.bio,
       contact: data.contato,
-      course_module: data.modulo
+      course_module: type
     })
-    .then((response) => console.log(response.data))
-    .catch((err) => console.log(err));
+    .then((response) => (history.push("/")))
+    .catch((err) => toast.error(err.response.data.message));
 };
+
+
     
     return (
         <div>
@@ -70,9 +85,9 @@ const Register = () => {
             <input
               type="text"
               placeholder="Digite novamente sua senha"
-              {...register("senha")}
+              {...register("confirmarSenha")}
             />
-            {errors.senha && <span>{errors.senha.message}</span>}
+            {errors.confirmarSenha && <span>{errors.confirmarSenha.message}</span>}
             <label>Bio</label>
             <input
               type="text"
@@ -88,14 +103,14 @@ const Register = () => {
             />
             {errors.contato && <span>{errors.contato.message}</span>}
             <label>Selecionar módulo</label>
-            <select name="" id="" {...register("modulo")}>
-              <option value="">Primeiro módulo (Introdução ao Frontend)</option>
-              <option value="">Segundo módulo (Frontend avançado)</option>
-              <option value="">Terceiro módulo (Introdução ao Backend)</option>
-              <option value="">Quarto módulo (Backend avançado)</option>
+            <select name="" id="" {...register("modulo")} onChange={event => setType(event.target.value)}>
+              <option >Primeiro módulo (Introdução ao Frontend)</option>
+              <option >Segundo módulo (Frontend avançado)</option>
+              <option >Terceiro módulo (Introdução ao Backend)</option>
+              <option >Quarto módulo (Backend avançado)</option>
             </select>
-          </form>
           <button type="submit">Cadastrar</button>
+          </form>
         </div>
       </div>
     );
