@@ -8,6 +8,8 @@ import { useState } from "react";
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logo from "../../assets/img/Logo.svg"
+import { Container, DivInput, Form, Register } from "./styles";
 
 const Login = () => {
     const history = useHistory();
@@ -44,31 +46,33 @@ const Login = () => {
 
 
   return (
-    <div>
-      <h2>Logo</h2>
-      <div className="container">
+    <Container>
+      <img src={logo} alt="logo" />
+      <Form>
         <h1>Login</h1>
         <form className="form" onSubmit={handleSubmit(onSubmitFunction)}>
           <label htmlFor="">E-mail</label>
-          <input type="text" placeholder="e-mail" {...register("email")} />
+          <input type="text" placeholder="E-mail" {...register("email")} />
           {errors.email && <span>{errors.email.message}</span>}
           <label htmlFor="">Senha</label>
-          <input type={type} placeholder="senha" {...register("senha")} />
+          <DivInput>
+          <input type={type} placeholder="Senha" {...register("senha")} />
           {type === "password"
           ? <EyeFilled onClick={() => setType("text")} />
-          : <EyeInvisibleFilled onClick={() => setType("password")} />
+          : <EyeInvisibleFilled onClick={() => setType("password")} />  
         }
+        </DivInput>
           {errors.senha && <span>{errors.senha.message}</span>}
           <button type="submit">Entrar</button>
         </form>
-        <div className="divRegister">
+        <Register>
             <p>Ainda não possui uma conta?</p>
           <button onClick={() => history.push("/register")}>
-            Ir para Register
+            Cadastre-se
           </button>
-        </div>
-      </div>
-    </div>
+        </Register>
+      </Form>
+    </Container>
   );
 };
 
