@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import Api from "../../services/api";
+
 
 const Dashboard = () => {
   const history = useHistory();
+
+  const [data, setData] = useState("")
+  
+  const userId = window.localStorage.getItem("@userId")
+
+  useEffect(() =>{
+    Api
+    .get(`users/${userId}`) 
+    .then((response) => setData(response.data))
+    .catch((err) => console.log(err));
+  })
+
 
   return (
     <div>
@@ -18,8 +32,8 @@ const Dashboard = () => {
         </button>
       </div>
       <div className="divInfo">
-          <h2>Olá, Nome</h2>
-          <p>Modulo</p>
+          <h2>Olá, {data.name}</h2>
+          <p>{data.course_module}</p>
       </div>
       <div className="divMain">
         <h2>Que pena! Estamos em desenvolvimento :(</h2>
