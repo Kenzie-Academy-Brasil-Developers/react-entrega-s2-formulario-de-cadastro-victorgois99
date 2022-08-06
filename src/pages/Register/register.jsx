@@ -8,6 +8,7 @@ import logo from "../../assets/img/Logo.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Container, DivLogo, Form } from "./styles";
+import { motion } from "framer-motion";
 
 const Register = () => {
   const history = useHistory();
@@ -57,75 +58,82 @@ const Register = () => {
   };
 
   return (
-    <Container>
-      <DivLogo>
-        <img src={logo} alt="logo" />
-        <button onClick={() => history.push("/")}>Voltar</button>
-      </DivLogo>
-      <Form>
-        <h1>Crie sua conta</h1>
-        <p>Rapido e grátis, vamos nessa</p>
-        <form className="form" onSubmit={handleSubmit(onSubmitFunction)}>
-          <label>Nome</label>
-          <input
-            type="text"
-            placeholder="Digite aqui seu nome"
-            {...register("nome")}
-          />
-          {errors.nome && <span>{errors.nome.message}</span>}
-          <label>E-mail</label>
-          <input
-            type="text"
-            placeholder="Digite aqui seu e-mail"
-            {...register("email")}
-          />
-          {errors.email && <span>{errors.email.message}</span>}
-          <label>Senha</label>
-          <input
-            type="text"
-            placeholder="Digite aqui sua senha"
-            {...register("senha")}
-          />
-          {errors.senha && <span>{errors.senha.message}</span>}
-          <label>Confirmar senha</label>
-          <input
-            type="text"
-            placeholder="Digite novamente sua senha"
-            {...register("confirmarSenha")}
-          />
-          {errors.confirmarSenha && (
-            <span>{errors.confirmarSenha.message}</span>
-          )}
-          <label>Bio</label>
-          <input
-            type="text"
-            placeholder="Fale sobre você"
-            {...register("bio")}
-          />
-          {errors.bio && <span>{errors.bio.message}</span>}
-          <label>Contato</label>
-          <input
-            type="text"
-            placeholder="Opção de contato"
-            {...register("contato")}
-          />
-          {errors.contato && <span>{errors.contato.message}</span>}
-          <label>Selecionar módulo</label>
-          <select
-            name=""
-            id=""
-            {...register("modulo")}
-            onChange={(event) => setType(event.target.value)}
-          >
-            <option>Primeiro módulo (Introdução ao Frontend)</option>
-            <option>Segundo módulo (Frontend avançado)</option>
-            <option>Terceiro módulo (Introdução ao Backend)</option>
-            <option>Quarto módulo (Backend avançado)</option>
-          </select>
-          <button type="submit">Cadastrar</button>
-        </form>
-      </Form>
-    </Container>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1}}
+    >
+      <Container>
+        <DivLogo>
+          <img src={logo} alt="logo" />
+          <button onClick={() => history.push("/")}>Voltar</button>
+        </DivLogo>
+        <Form>
+          <h1>Crie sua conta</h1>
+          <p>Rapido e grátis, vamos nessa</p>
+          <form className="form" onSubmit={handleSubmit(onSubmitFunction)}>
+            <label>Nome</label>
+            <input
+              type="text"
+              placeholder="Digite aqui seu nome"
+              {...register("nome")}
+            />
+            {errors.nome && <span>{errors.nome.message}</span>}
+            <label>E-mail</label>
+            <input
+              type="text"
+              placeholder="Digite aqui seu e-mail"
+              {...register("email")}
+            />
+            {errors.email && <span>{errors.email.message}</span>}
+            <label>Senha</label>
+            <input
+              type="text"
+              placeholder="Digite aqui sua senha"
+              {...register("senha")}
+            />
+            {errors.senha && <span>{errors.senha.message}</span>}
+            <label>Confirmar senha</label>
+            <input
+              type="text"
+              placeholder="Digite novamente sua senha"
+              {...register("confirmarSenha")}
+            />
+            {errors.confirmarSenha && (
+              <span>{errors.confirmarSenha.message}</span>
+            )}
+            <label>Bio</label>
+            <input
+              type="text"
+              placeholder="Fale sobre você"
+              {...register("bio")}
+            />
+            {errors.bio && <span>{errors.bio.message}</span>}
+            <label>Contato</label>
+            <input
+              type="text"
+              placeholder="Opção de contato"
+              {...register("contato")}
+            />
+            {errors.contato && <span>{errors.contato.message}</span>}
+            <label>Selecionar módulo</label>
+            <select
+              name=""
+              id=""
+              {...register("modulo")}
+              onChange={(event) => setType(event.target.value)}
+            >
+              <option>Primeiro módulo (Introdução ao Frontend)</option>
+              <option>Segundo módulo (Frontend avançado)</option>
+              <option>Terceiro módulo (Introdução ao Backend)</option>
+              <option>Quarto módulo (Backend avançado)</option>
+            </select>
+            <button type="submit">Cadastrar</button>
+          </form>
+        </Form>
+      </Container>
+    </motion.div>
   );
 };
 
