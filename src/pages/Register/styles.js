@@ -8,14 +8,14 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 export const DivLogo = styled.div`
 display: flex;
 justify-content: space-between;
 margin: 20px 0;
-width: 23%;
+width: 50vh;
 
 button{
     background-color: #212529;
