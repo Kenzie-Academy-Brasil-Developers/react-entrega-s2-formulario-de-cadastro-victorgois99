@@ -6,17 +6,22 @@ import reportWebVitals from "./reportWebVitals";
 
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { AnimatePresence } from "framer-motion";
 import { GlobalStyles, ResetCSS } from "./styles/globalStyle";
-
+import Providers from "./contexts/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <GlobalStyles />
-    <ResetCSS />
-    <ToastContainer />
-      <App />
+      <AnimatePresence>
+        <Providers>
+          <GlobalStyles />
+          <ResetCSS />
+          <ToastContainer />
+          <App />
+        </Providers>
+      </AnimatePresence>
     </BrowserRouter>
   </React.StrictMode>
 );

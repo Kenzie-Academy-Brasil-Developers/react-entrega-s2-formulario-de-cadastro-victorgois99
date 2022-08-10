@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Container, DivLogo, Form } from "./styles";
 import { motion } from "framer-motion";
+import {useContext} from "react"
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Register = () => {
   const history = useHistory();
@@ -30,6 +32,7 @@ const Register = () => {
 
     bio: yup.string().required("Bio obrigatória"),
     contato: yup.string().required("Contato obrigatório"),
+    course_module: yup.string().default("Primeiro módulo (Introdução ao Frontend)")
   });
 
   const {
@@ -39,23 +42,23 @@ const Register = () => {
   } = useForm({
     resolver: yupResolver(formSchema),
   });
+  
+  const {registrar} = useContext(AuthContext)
 
-  const [type, setType] = useState("Primeiro módulo (Introdução ao Frontend)");
+  // const onSubmitFunction = (data) => {
+  //   console.log(data);
 
-  const onSubmitFunction = (data) => {
-    console.log(data);
-
-    Api.post("users", {
-      email: data.email,
-      password: data.senha,
-      name: data.nome,
-      bio: data.bio,
-      contact: data.contato,
-      course_module: type,
-    })
-      .then((response) => history.push("/"))
-      .catch((err) => toast.error(err.response.data.message));
-  };
+  //   Api.post("users", {
+  //     email: data.email,
+  //     password: data.senha,
+  //     name: data.nome,
+  //     bio: data.bio,
+  //     contact: data.contato,
+  //     course_module: type,
+  //   })
+  //     .then((response) => history.push("/"))
+  //     .catch((err) => toast.error(err.response.data.message));
+  // };
 
   return (
     <motion.div
@@ -72,7 +75,7 @@ const Register = () => {
         <Form>
           <h1>Crie sua conta</h1>
           <p>Rapido e grátis, vamos nessa</p>
-          <form className="form" onSubmit={handleSubmit(onSubmitFunction)}>
+          <form className="form" onSubmit={handleSubmit(registrar)}>
             <label>Nome</label>
             <input
               type="text"
@@ -121,8 +124,7 @@ const Register = () => {
             <select
               name=""
               id=""
-              {...register("modulo")}
-              onChange={(event) => setType(event.target.value)}
+              {...register("course_module")}
             >
               <option>Primeiro módulo (Introdução ao Frontend)</option>
               <option>Segundo módulo (Frontend avançado)</option>

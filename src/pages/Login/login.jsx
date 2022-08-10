@@ -11,6 +11,8 @@ import "react-toastify/dist/ReactToastify.css";
 import logo from "../../assets/img/Logo.svg";
 import { Container, DivInput, Form, Register } from "./styles";
 import { motion } from "framer-motion";
+import {useContext} from "react"
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Login = () => {
   const history = useHistory();
@@ -36,20 +38,22 @@ const Login = () => {
     resolver: yupResolver(formSchema),
   });
 
-  const onSubmitFunction = (data) => {
-    console.log(data);
+  const {signIn} = useContext(AuthContext)
 
-    Api.post("sessions", {
-      email: data.email,
-      password: data.senha,
-    })
-      .then((response) => {
-        history.push("/dashboard");
-        window.localStorage.setItem("@token", response.data.token);
-        window.localStorage.setItem("@userId", response.data.user.id);
-      })
-      .catch((err) => toast.error(err.response.data.message));
-  };
+  // const onSubmitFunction = (data) => {
+  //   console.log(data);
+
+  //   Api.post("sessions", {
+  //     email: data.email,
+  //     password: data.senha,
+  //   })
+  //     .then((response) => {
+  //       history.push("/dashboard");
+  //       window.localStorage.setItem("@token", response.data.token);
+  //       window.localStorage.setItem("@userId", response.data.user.id);
+  //     })
+  //     .catch((err) => toast.error(err.response.data.message));
+  // };
 
   return (
     <motion.div 
@@ -62,7 +66,7 @@ const Login = () => {
         <img src={logo} alt="logo" />
         <Form>
           <h1>Login</h1>
-          <form className="form" onSubmit={handleSubmit(onSubmitFunction)}>
+          <form className="form" onSubmit={handleSubmit(signIn)}>
             <label htmlFor="">E-mail</label>
             <input type="text" placeholder="E-mail" {...register("email")} />
             {errors.email && <span>{errors.email.message}</span>}
