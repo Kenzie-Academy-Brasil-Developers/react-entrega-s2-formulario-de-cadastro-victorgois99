@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Api from "../../services/api";
 import logo from "../../assets/img/Logo.svg";
-import { Container, DivHeader, DivInfo, DivMain } from "./styles";
+import lixo from "../../assets/img/Lixo.png";
+import { Container, DivHeader, DivInfo, DivMain, MainTitle, Techs } from "./styles";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const history = useHistory();
 
-  const [data, setData] = useState("");
+  const [data, setData] = useState({techs:[]});
 
   const userId = window.localStorage.getItem("@userId");
 
@@ -46,13 +47,26 @@ const Dashboard = () => {
           </div>
         </DivInfo>
         <DivMain>
-          <div>
-            <h2>Que pena! Estamos em desenvolvimento :(</h2>
-            <p>
-              Nossa aplicação está em desenvolvimento, em breve teremos
-              novidades!
-            </p>
-          </div>
+          <MainTitle>
+            <div>
+              <h2>Tecnologias</h2>
+              <button>+</button>
+            </div>
+          </MainTitle>
+          {data.techs.length === 0     
+          ?<p>Ainda não há tecnologias cadastradas</p>
+          :
+          (data.techs.map((elem) => 
+          <Techs>
+              <div>
+                <h2>{elem.title}</h2>
+                <p>{elem.status}</p>
+              </div>
+            <button>
+              <img src={lixo} alt="" />
+            </button>
+          </Techs>
+          ))} 
         </DivMain>
       </Container>
     </motion.div>
