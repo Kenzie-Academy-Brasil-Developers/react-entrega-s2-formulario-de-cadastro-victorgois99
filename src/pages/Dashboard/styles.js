@@ -122,7 +122,6 @@ export const Techs = styled.div`
         width: 100%;
         padding: 15px;
         background-color: #212529;
-        /* border-radius: 4px; */
     }
 
     h2{

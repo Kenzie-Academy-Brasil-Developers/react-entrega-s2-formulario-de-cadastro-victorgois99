@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
 import { GlobalStyles, ResetCSS } from "./styles/globalStyle";
 import Providers from "./contexts/AuthContext";
+import TechProviders from "./contexts/TechContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -16,10 +17,12 @@ root.render(
     <BrowserRouter>
       <AnimatePresence>
         <Providers>
-          <GlobalStyles />
-          <ResetCSS />
-          <ToastContainer />
-          <App />
+          <TechProviders>
+            <GlobalStyles />
+            <ResetCSS />
+            <ToastContainer />
+            <App />
+          </TechProviders>
         </Providers>
       </AnimatePresence>
     </BrowserRouter>
