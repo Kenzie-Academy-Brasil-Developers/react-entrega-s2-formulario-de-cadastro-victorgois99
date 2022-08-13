@@ -16,6 +16,8 @@ const TechProviders = ({children}) =>{
         await Api.delete(`users/techs/${id}`, {
             headers: {"Authorization": `Bearer ${token}`}
         })
+        .then(response => {toast.success("Tecnologia excluida")})
+        .catch((err) => console.log(err))
     }
 
     const createTech = async (data) =>{

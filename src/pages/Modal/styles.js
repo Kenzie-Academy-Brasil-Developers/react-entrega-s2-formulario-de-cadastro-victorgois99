@@ -1,13 +1,18 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    padding: 20px;
+`;
+
 export const StyledModal = styled.div`
 
-    position: fixed;
     display: flex;
     flex-direction: column;
-    width: 25%;
-    min-height: 40vh;
-    margin-left: 550px;
     background-color: #212529;
 `;
 
@@ -19,6 +24,7 @@ export const HeaderModal = styled.div`
     h1{
         font-size: 14px;
         color: #F8F9FA;
+        margin: 10px 0;
     }
 
     button{
@@ -33,18 +39,18 @@ export const Form = styled.div`
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    margin: 10px;
+    margin: 0 10px;
 
     form{
         display: flex;
         flex-direction: column;
         margin: 10px;
-
     }
 
     label{
         color: #F8F9FA;
         font-size: 12px;
+        margin: 10px 0;
     }
 
     input{
@@ -56,7 +62,12 @@ export const Form = styled.div`
         margin: 10px 0;
         background-color: #343B41;
         color:#FFFFFF;
+    }
 
+    span{
+        color: red;
+        font-size: 14px;
+        margin: 10px 0;
     }
 
     select{
@@ -76,7 +87,7 @@ export const Form = styled.div`
         border: none;
         border-radius: 4px;
         padding: 10px;
-        margin: 10px;
+        margin: 10px 0;
         width: 90%;
         color: #FFFFFF;
         font-size: 16px;

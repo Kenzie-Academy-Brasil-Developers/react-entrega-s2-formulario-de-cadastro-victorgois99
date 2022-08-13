@@ -53,7 +53,7 @@ export const Form = styled.div`
   span{
     margin: 8px 0;
     font-size: 12px;
-    color: #FFFFFF;
+    color: yellow;
     font-weight: bold;
   }
 
