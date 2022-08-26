@@ -1,37 +1,43 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Api from "../../services/api";
 import logo from "../../assets/img/Logo.svg";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { Container, DivLogo, Form } from "./styles";
 import { motion } from "framer-motion";
-import {useContext} from "react"
-import { AuthContext } from "../../contexts/AuthContext";
+import { UseAuthContext } from "../../contexts/AuthContext";
+
+interface IFormSchema {
+  email: string;
+  password: string;
+  confirmPassword?: string
+  name: string;
+  bio: string;
+  contact: string;
+  course_module: string
+}
 
 const Register = () => {
-  const history = useHistory();
+  const history = useNavigate();
 
   const formSchema = yup.object().shape({
-    nome: yup.string().required("Nome obrigatório"),
+    name: yup.string().required("Nome obrigatório"),
     email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-    senha: yup
+    password: yup
       .string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\.*])(?=.{8,})/,
         "A senha deve conter 8 caraceteres, uma maiúscula, uma minúscula, um número e um caracter especial"
       )
       .required("Senha obrigatória"),
-    confirmarSenha: yup
+    confirmPassword: yup
       .string()
       .required("Senha obrigatória")
-      .oneOf([yup.ref("senha")], "As senhas precisam ser iguais."),
+      .oneOf([yup.ref("password")], "As senhas precisam ser iguais."),
 
     bio: yup.string().required("Bio obrigatória"),
-    contato: yup.string().required("Contato obrigatório"),
+    contact: yup.string().required("Contato obrigatório"),
     course_module: yup.string().default("Primeiro módulo (Introdução ao Frontend)")
   });
 
@@ -39,26 +45,11 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm <IFormSchema>({
     resolver: yupResolver(formSchema),
   });
   
-  const {registrar} = useContext(AuthContext)
-
-  // const onSubmitFunction = (data) => {
-  //   console.log(data);
-
-  //   Api.post("users", {
-  //     email: data.email,
-  //     password: data.senha,
-  //     name: data.nome,
-  //     bio: data.bio,
-  //     contact: data.contato,
-  //     course_module: type,
-  //   })
-  //     .then((response) => history.push("/"))
-  //     .catch((err) => toast.error(err.response.data.message));
-  // };
+  const {registrar} = UseAuthContext()
 
   return (
     <motion.div
@@ -70,7 +61,7 @@ const Register = () => {
       <Container>
         <DivLogo>
           <img src={logo} alt="logo" />
-          <button onClick={() => history.push("/")}>Voltar</button>
+          <button onClick={() => history("/")}>Voltar</button>
         </DivLogo>
         <Form>
           <h1>Crie sua conta</h1>
@@ -80,9 +71,9 @@ const Register = () => {
             <input
               type="text"
               placeholder="Digite aqui seu nome"
-              {...register("nome")}
+              {...register("name")}
             />
-            {errors.nome && <span>{errors.nome.message}</span>}
+            {errors.name && <span>{errors.name.message}</span>}
             <label>E-mail</label>
             <input
               type="text"
@@ -94,17 +85,17 @@ const Register = () => {
             <input
               type="text"
               placeholder="Digite aqui sua senha"
-              {...register("senha")}
+              {...register("password")}
             />
-            {errors.senha && <span>{errors.senha.message}</span>}
+            {errors.password && <span>{errors.password.message}</span>}
             <label>Confirmar senha</label>
             <input
               type="text"
               placeholder="Digite novamente sua senha"
-              {...register("confirmarSenha")}
+              {...register("confirmPassword")}
             />
-            {errors.confirmarSenha && (
-              <span>{errors.confirmarSenha.message}</span>
+            {errors.confirmPassword && (
+              <span>{errors.confirmPassword.message}</span>
             )}
             <label>Bio</label>
             <input
@@ -117,12 +108,11 @@ const Register = () => {
             <input
               type="text"
               placeholder="Opção de contato"
-              {...register("contato")}
+              {...register("contact")}
             />
-            {errors.contato && <span>{errors.contato.message}</span>}
+            {errors.contact && <span>{errors.contact.message}</span>}
             <label>Selecionar módulo</label>
             <select
-              name=""
               id=""
               {...register("course_module")}
             >

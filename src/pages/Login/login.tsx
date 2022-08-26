@@ -1,27 +1,28 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Api from "../../services/api";
 import { useState } from "react";
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import logo from "../../assets/img/Logo.svg";
 import { Container, DivInput, Form, Register } from "./styles";
 import { motion } from "framer-motion";
-import {useContext} from "react"
-import { AuthContext } from "../../contexts/AuthContext";
+import { UseAuthContext } from "../../contexts/AuthContext";
+
+interface IFormSchema {
+  email: string;
+  password: string
+}
 
 const Login = () => {
-  const history = useHistory();
+  const history = useNavigate();
 
   const [type, setType] = useState("password");
 
   const formSchema = yup.object().shape({
     email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-    senha: yup
+    password: yup
       .string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\.*])(?=.{8,})/,
@@ -34,26 +35,11 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm <IFormSchema>({
     resolver: yupResolver(formSchema),
   });
 
-  const {signIn} = useContext(AuthContext)
-
-  // const onSubmitFunction = (data) => {
-  //   console.log(data);
-
-  //   Api.post("sessions", {
-  //     email: data.email,
-  //     password: data.senha,
-  //   })
-  //     .then((response) => {
-  //       history.push("/dashboard");
-  //       window.localStorage.setItem("@token", response.data.token);
-  //       window.localStorage.setItem("@userId", response.data.user.id);
-  //     })
-  //     .catch((err) => toast.error(err.response.data.message));
-  // };
+  const {signIn} = UseAuthContext()
 
   return (
     <motion.div 
@@ -72,19 +58,19 @@ const Login = () => {
             {errors.email && <span>{errors.email.message}</span>}
             <label htmlFor="">Senha</label>
             <DivInput>
-              <input type={type} placeholder="Senha" {...register("senha")} />
+              <input type={type} placeholder="Senha" {...register("password")} />
               {type === "password" ? (
                 <EyeFilled onClick={() => setType("text")} />
               ) : (
                 <EyeInvisibleFilled onClick={() => setType("password")} />
               )}
             </DivInput>
-            {errors.senha && <span>{errors.senha.message}</span>}
+            {errors.password && <span>{errors.password.message}</span>}
             <button type="submit">Entrar</button>
           </form>
           <Register>
             <p>Ainda não possui uma conta?</p>
-            <button onClick={() => history.push("/register")}>
+            <button onClick={() => history("/register")}>
               Cadastre-se
             </button>
           </Register>

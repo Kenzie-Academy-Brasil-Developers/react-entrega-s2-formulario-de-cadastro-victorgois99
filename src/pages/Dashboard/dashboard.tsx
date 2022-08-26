@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Api from "../../services/api";
 import logo from "../../assets/img/Logo.svg";
 import lixo from "../../assets/img/Lixo.png";
@@ -7,12 +7,14 @@ import { Container, DivHeader, DivInfo, DivMain, MainTitle, Techs } from "./styl
 import { motion } from "framer-motion";
 import { Modal } from "../Modal/modal";
 import { TechContext } from "../../contexts/TechContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Dashboard = () => {
-  const history = useHistory();
+  const history = useNavigate();
 
   const [data, setData] = useState({techs:[]});
   const {modal, setModal, deletar} = useContext(TechContext)
+  const {setToken} = useContext(AuthContext)
 
   const userId = window.localStorage.getItem("@userId");
 
@@ -21,7 +23,7 @@ const Dashboard = () => {
     Api.get(`users/${userId}`)
       .then((response) => setData(response.data))
       .catch((err) => console.log(err));
-  });
+  },[]);
 
   return (
     <motion.div
@@ -36,8 +38,9 @@ const Dashboard = () => {
             <img src={logo} alt="logo" />
             <button
               onClick={() => {
-                history.push("/");
+                setToken ("");
                 window.localStorage.clear();
+                history("/");
               }}
             >
               Sair
